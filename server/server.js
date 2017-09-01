@@ -110,6 +110,24 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
+// POST /users
+app.post('/users', (req, res) => {
+  let body = _.pick(req.body, ['email', 'password']);
+  let user = new User(body);
+
+  user.save()
+    .then(() => {
+      return user.generateAuthToken();
+    })
+    .then((token) => {
+      // send as custom http header
+      res.header('x-auth', token).send(user);
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
+});
+
 // start server at port
 app.listen(port, () => {
   console.log(`Started on port ${port}`);
