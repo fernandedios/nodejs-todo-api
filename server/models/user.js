@@ -29,27 +29,51 @@ let UserSchema = new mongoose.Schema({
 // Override method toJSON
 // DO NOT USE fat arrow function, we need to bind this
 UserSchema.methods.toJSON = function() {
-  let user = this;
+  let user = this; // lowercase user since this is an instance method
 
   // convert mongoose variable to regular object
   let userObject = user.toObject();
 
   // do not return secured items like password and tokens
-  return _.pick(userObject, ['_id', 'email']); 
+  return _.pick(userObject, ['_id', 'email']);
 };
 
-// DO NOT USE fat arrow function, we need to bind this
-UserSchema.methods.generateAuthToken = function () {
+UserSchema.methods.generateAuthToken = function() {
   let user = this;
   let access = 'auth';
   let token = jwt.sign({ _id: user._id.toHexString(), access }, 'abc123').toString();
 
   user.tokens.push({ access, token });
 
-  // return this so we can tap on another .then, with token as returned object on server.js
+  // return as promise so we can tap another .then, with token as returned object on server.js
   return user.save().then(() => {
       return token;
     });
+};
+
+// custom model method
+UserSchema.statics.findByToken = function(token) {
+  let User = this; // uppercase User since this is a model method
+  let decoded;
+
+  // use try / catch because jwt throws an error if token is invalid
+  try {
+    decoded = jwt.verify(token, 'abc123');
+  }
+  catch(err) {
+    // return new promise with reject flag
+    // return new Promise((resolve, reject) => {
+    //   reject();
+    // });
+    return Promise.reject();
+  }
+
+  // return as promise so we can tap another .then, with token as returned object on server.js
+  return User.findOne({
+    '_id': decoded._id,
+    'tokens.token': token,
+    'tokens.access': 'auth'
+  });
 };
 
 let User = mongoose.model('User', UserSchema);
