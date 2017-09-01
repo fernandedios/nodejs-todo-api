@@ -121,7 +121,7 @@ app.post('/users', (req, res) => {
       return user.generateAuthToken();
     })
     .then((token) => {
-      // send as custom http header
+      // send custom http header x-auth
       res.header('x-auth', token).send(user);
     })
     .catch((err) => {
