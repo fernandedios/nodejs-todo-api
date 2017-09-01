@@ -69,7 +69,7 @@ UserSchema.statics.findByToken = function(token) {
     return Promise.reject();
   }
 
-  // return as promise so we can tap another .then, with token as returned object on server.js
+  // return as promise so we can tap another .then
   return User.findOne({
     '_id': decoded._id,
     'tokens.token': token,
