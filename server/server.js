@@ -129,6 +129,23 @@ app.post('/users', (req, res) => {
     });
 });
 
+// POST /users/login
+app.post('/users/login', (req, res) => {
+  let body = _.pick(req.body, ['email', 'password']);
+
+  User.findByCredentials(body.email, body.password)
+    .then((user) => {
+      return user.generateAuthToken()
+        .then((token) => {
+          // send custom http header x-auth
+          res.header('x-auth', token).send(user);
+        });
+    })
+    .catch((err) => {
+      res.status(400).send();
+    });
+});
+
 // GET /users/me
 app.get('/users/me', authenticate, (req, res) => {
   res.send(req.user);
