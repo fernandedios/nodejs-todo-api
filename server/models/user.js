@@ -77,11 +77,11 @@ UserSchema.statics.findByToken = function(token) {
   });
 };
 
-UserSchema.statics.findByCredentials = function(email, password) {
+UserSchema.statics.findByCredentials = function (email, password) {
   let User = this;
 
   return User.findOne({ email })
-    then((user) => {
+    .then((user) => {
       if (!user) {
         return Promise.reject();
       }

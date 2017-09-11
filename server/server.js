@@ -129,7 +129,7 @@ app.post('/users', (req, res) => {
     });
 });
 
-// POST /users/login
+// POST /users/login { email, password }
 app.post('/users/login', (req, res) => {
   let body = _.pick(req.body, ['email', 'password']);
 
