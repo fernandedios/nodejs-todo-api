@@ -27,6 +27,7 @@ let UserSchema = new mongoose.Schema({
   }]
 });
 
+/* -- instance methods -- */
 // Override method toJSON
 // DO NOT USE fat arrow function, we need access to this binding
 UserSchema.methods.toJSON = function() {
@@ -52,6 +53,19 @@ UserSchema.methods.generateAuthToken = function() {
     });
 };
 
+UserSchema.methods.removeToken = function(token) {
+  let user = this;
+
+
+  return user.update({
+    // use $pull mongodb operator
+    $pull: {
+      tokens: { token }
+    }
+  });
+};
+
+/* -- model methods -- */
 // custom model method
 UserSchema.statics.findByToken = function(token) {
   let User = this; // uppercase User since this is a model method
