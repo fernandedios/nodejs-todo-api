@@ -1,14 +1,11 @@
 let env = process.env.NODE_ENV || 'development';
-console.log('env ****', env);
 
-if (env === 'development') {
-  process.env.PORT = 3000;
-  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp'
-}
-else if (env === 'test') {
-  process.env.PORT = 3000;
-  process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest'
-}
-else if (env === 'production') {
-  process.env.MONGODB_URI = 'mongodb://heroku:heroku@ds163613.mlab.com:63613/todo-api-heroku';
+if (env === 'development' || env === 'test') {
+  const config = require('./config.json'); // json automatically converted to object
+  const envConfig = config[env];
+
+  Object.keys(envConfig) // gets object keys and returns it as an array
+    .forEach((key) => {
+      process.env[key] = envConfig[key];
+    });
 }

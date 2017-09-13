@@ -196,7 +196,7 @@ describe('PATCH /todos/:id', () => {
       .end(done);
   });
 
-  it('should not update todo if it belongs to another user', (done) => {
+  it('should not update todo created by another user', (done) => {
     const hexId = todos[0]._id.toHexString();
     const text = 'Test todo text';
     const completed = true;
