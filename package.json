@@ -1,7 +1,7 @@
 {
-  "name": "todo-api",
+  "name": "nodejs-todo-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Express API refresher",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
@@ -11,8 +11,8 @@
   "engines": {
     "node": "6.2.2"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Fernan de Dios",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",
