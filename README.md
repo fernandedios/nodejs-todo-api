@@ -8,13 +8,48 @@ Yet another express todo API
 Getting Started
 ------------
 
-Checkout this repo, install dependencies, then start the app.
+Checkout this repo, install dependencies, configure, then start the app.
 
 ```bash
 $ git clone git@github.com:fernandedios/nodejs-todo-api.git
 $ cd nodejs-todo-api
 $ npm install
+
+-- configure app
+
 $ npm start
+```
+
+Configuration
+------------
+
+This web application requires the following as starting point:
+- Local or Online hosted MongoDB
+
+### Local Development Variables
+```js
+{
+  "test": {
+    "PORT": 3000,
+    "MONGODB_URI": "mongodb://your_mongodb_for_tests",
+    "JWT_SECRET": "your_jwt_secret_for_tests"
+  },
+  "development": {
+    "PORT": 3000,
+    "MONGODB_URI": "mongodb://your_mongodb_for_development",
+    "JWT_SECRET": "your_jwt_secret_for_development"
+  }
+}
+```
+
+Save as 'config.json' and place it inside the server/config folder.
+
+### Production Environment Variables
+You will need to add the following environment variables to your production host
+
+```js
+MONGODB_URI,
+JWT_SECRET
 ```
 
 Testing Suite
